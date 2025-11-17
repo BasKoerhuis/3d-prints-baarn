@@ -1,8 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+
 import { useRouter } from 'next/navigation';
 import { Eye, EyeOff } from 'lucide-react';
+import { useState, useEffect } from 'react';
 
 export default function SettingsPage() {
   const router = useRouter();
@@ -29,6 +30,32 @@ export default function SettingsPage() {
     smtpUser: '',
     smtpPass: ''
   });
+
+
+// Load current settings
+  useEffect(() => {
+    async function loadSettings() {
+      try {
+        const res = await fetch('/api/admin/settings/email');
+        const data = await res.json();
+        
+        if (data.success && data.data) {
+          setEmailSettings({
+            orderEmail: data.data.orderEmail || '',
+            smtpHost: data.data.smtpHost || '',
+            smtpPort: data.data.smtpPort || '',
+            smtpUser: data.data.smtpUser || '',
+            smtpPass: '' // Don't pre-fill password
+          });
+        }
+      } catch (error) {
+        console.error('Failed to load settings:', error);
+      }
+    }
+    
+    loadSettings();
+  }, []);
+
 
   const togglePasswordVisibility = (field: keyof typeof showPasswords) => {
     setShowPasswords(prev => ({ ...prev, [field]: !prev[field] }));

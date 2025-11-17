@@ -1,15 +1,42 @@
 import nodemailer from 'nodemailer';
 import { OrderFormData } from '@/types';
+import { readFileSync, existsSync } from 'fs';
+import { join } from 'path';
+
+// Load settings from file or environment
+function getSettings() {
+  try {
+    const settingsPath = join(process.cwd(), 'data', 'settings.json');
+    
+    if (existsSync(settingsPath)) {
+      const settings = JSON.parse(readFileSync(settingsPath, 'utf-8'));
+      return settings;
+    }
+  } catch (error) {
+    console.error('Error loading settings:', error);
+  }
+  
+  // Fallback to environment variables
+  return {
+    orderEmail: process.env.ORDER_EMAIL || 'jeltevveen@gmail.com',
+    smtpHost: process.env.SMTP_HOST || 'smtp.strato.com',
+    smtpPort: parseInt(process.env.SMTP_PORT || '465'),
+    smtpUser: process.env.SMTP_USER,
+    smtpPass: process.env.SMTP_PASS,
+  };
+}
 
 // Create email transporter
 function createTransporter() {
+  const settings = getSettings();
+  
   return nodemailer.createTransport({
-    host: process.env.SMTP_HOST || 'smtp.strato.com',
-    port: parseInt(process.env.SMTP_PORT || '465'),
+    host: settings.smtpHost,
+    port: settings.smtpPort,
     secure: true,
     auth: {
-      user: process.env.SMTP_USER,
-      pass: process.env.SMTP_PASS,
+      user: settings.smtpUser,
+      pass: settings.smtpPass,
     },
   });
 }
@@ -87,12 +114,12 @@ function formatOrderEmail(orderData: OrderFormData): string {
 // Send order email
 export async function sendOrderEmail(orderData: OrderFormData): Promise<boolean> {
   try {
+    const settings = getSettings();
     const transporter = createTransporter();
-    const orderEmail = process.env.ORDER_EMAIL || 'jeltevveen@gmail.com';
     
     const mailOptions = {
-      from: process.env.SMTP_USER,
-      to: orderEmail,
+      from: settings.smtpUser,
+      to: settings.orderEmail,
       subject: `🎯 Nieuwe Bestelling van ${orderData.name}`,
       html: formatOrderEmail(orderData),
     };
@@ -112,12 +139,12 @@ export async function sendContactEmail(data: {
   message: string;
 }): Promise<boolean> {
   try {
+    const settings = getSettings();
     const transporter = createTransporter();
-    const orderEmail = process.env.ORDER_EMAIL || 'jeltevveen@gmail.com';
     
     const mailOptions = {
-      from: process.env.SMTP_USER,
-      to: orderEmail,
+      from: settings.smtpUser,
+      to: settings.orderEmail,
       subject: `💬 Nieuw Contactbericht van ${data.name}`,
       html: `
 <html>
