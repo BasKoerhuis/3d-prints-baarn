@@ -40,6 +40,7 @@ export interface GalleryImage {
 export interface OrderFormData {
   name: string;
   address: string;
+  postalCode: string;
   city: string;
   contactMethod: 'email' | 'phone';
   contactValue: string;
@@ -53,6 +54,7 @@ export interface OrderProduct {
   productName: string;
   quantity: number;
   priceType: 'child' | 'adult';
+  price: number;
 }
 
 // Config Types

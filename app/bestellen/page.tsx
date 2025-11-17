@@ -14,6 +14,7 @@ function OrderPage() {
   const [formData, setFormData] = useState({
     name: '',
     address: '',
+    postalCode: '',
     city: '',
     contactMethod: 'email' as 'email' | 'phone',
     contactValue: '',
@@ -76,6 +77,19 @@ function OrderPage() {
     setSelectedProducts(selectedProducts.filter((_, i) => i !== index));
   };
 
+  const getProductPrice = (productId: string, priceType: 'child' | 'adult'): number => {
+    const product = products.find(p => p.id === productId);
+    if (!product) return 0;
+    return priceType === 'child' ? product.priceChild : product.priceAdult;
+  };
+
+  const calculateTotal = (): number => {
+    return selectedProducts.reduce((total, item) => {
+      const price = getProductPrice(item.productId, item.priceType);
+      return total + (price * item.quantity);
+    }, 0);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -87,13 +101,19 @@ function OrderPage() {
 
     setStatus('loading');
 
+    // Add prices to products before sending
+    const productsWithPrices = selectedProducts.map(item => ({
+      ...item,
+      price: getProductPrice(item.productId, item.priceType)
+    }));
+
     try {
       const res = await fetch('/api/orders', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ...formData,
-          products: selectedProducts
+          products: productsWithPrices
         })
       });
 
@@ -105,6 +125,7 @@ function OrderPage() {
         setFormData({
           name: '',
           address: '',
+          postalCode: '',
           city: '',
           contactMethod: 'email',
           contactValue: '',
@@ -143,13 +164,35 @@ function OrderPage() {
               <div>
                 <h3 className="text-xl font-semibold mb-4">Jouw Gegevens</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
+                  <div className="md:col-span-2">
                     <label className="block text-sm font-medium mb-2">Naam *</label>
                     <input
                       type="text"
                       className="input"
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      required
+                    />
+                  </div>
+                  <div className="md:col-span-2">
+                    <label className="block text-sm font-medium mb-2">Adres *</label>
+                    <input
+                      type="text"
+                      className="input"
+                      placeholder="Straatnaam en huisnummer"
+                      value={formData.address}
+                      onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Postcode *</label>
+                    <input
+                      type="text"
+                      className="input"
+                      placeholder="1234 AB"
+                      value={formData.postalCode}
+                      onChange={(e) => setFormData({ ...formData, postalCode: e.target.value })}
                       required
                     />
                   </div>
@@ -160,16 +203,6 @@ function OrderPage() {
                       className="input"
                       value={formData.city}
                       onChange={(e) => setFormData({ ...formData, city: e.target.value })}
-                      required
-                    />
-                  </div>
-                  <div className="md:col-span-2">
-                    <label className="block text-sm font-medium mb-2">Adres *</label>
-                    <input
-                      type="text"
-                      className="input"
-                      value={formData.address}
-                      onChange={(e) => setFormData({ ...formData, address: e.target.value })}
                       required
                     />
                   </div>
@@ -201,57 +234,76 @@ function OrderPage() {
 
               <div>
                 <h3 className="text-xl font-semibold mb-4">Producten</h3>
-                {selectedProducts.map((item, index) => (
-                  <div key={index} className="bg-gray-50 p-4 rounded-xl mb-4">
-                    <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                      <div className="md:col-span-2">
-                        <label className="block text-sm font-medium mb-2">Product</label>
-                        <select
-                          className="input"
-                          value={item.productId}
-                          onChange={(e) => updateProduct(index, { productId: e.target.value })}
-                        >
-                          {products.map((p) => (
-                            <option key={p.id} value={p.id}>{p.name}</option>
-                          ))}
-                        </select>
+                {selectedProducts.map((item, index) => {
+                  const price = getProductPrice(item.productId, item.priceType);
+                  const lineTotal = price * item.quantity;
+                  
+                  return (
+                    <div key={index} className="bg-gray-50 p-4 rounded-xl mb-4">
+                      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                        <div className="md:col-span-2">
+                          <label className="block text-sm font-medium mb-2">Product</label>
+                          <select
+                            className="input"
+                            value={item.productId}
+                            onChange={(e) => updateProduct(index, { productId: e.target.value })}
+                          >
+                            {products.map((p) => (
+                              <option key={p.id} value={p.id}>{p.name}</option>
+                            ))}
+                          </select>
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium mb-2">Aantal</label>
+                          <input
+                            type="number"
+                            min="1"
+                            className="input"
+                            value={item.quantity}
+                            onChange={(e) => updateProduct(index, { quantity: parseInt(e.target.value) })}
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium mb-2">Prijs</label>
+                          <select
+                            className="input"
+                            value={item.priceType}
+                            onChange={(e) => updateProduct(index, { priceType: e.target.value as 'child' | 'adult' })}
+                          >
+                            <option value="child">Kind (€{price.toFixed(2)})</option>
+                            <option value="adult">Volwassene (€{getProductPrice(item.productId, 'adult').toFixed(2)})</option>
+                          </select>
+                        </div>
                       </div>
-                      <div>
-                        <label className="block text-sm font-medium mb-2">Aantal</label>
-                        <input
-                          type="number"
-                          min="1"
-                          className="input"
-                          value={item.quantity}
-                          onChange={(e) => updateProduct(index, { quantity: parseInt(e.target.value) })}
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium mb-2">Prijs</label>
-                        <select
-                          className="input"
-                          value={item.priceType}
-                          onChange={(e) => updateProduct(index, { priceType: e.target.value as 'child' | 'adult' })}
-                        >
-                          <option value="child">Kind</option>
-                          <option value="adult">Volwassene</option>
-                        </select>
+                      <div className="mt-3 flex justify-between items-center">
+                        <div className="text-sm text-gray-600">
+                          {item.quantity} x €{price.toFixed(2)} = <span className="font-semibold">€{lineTotal.toFixed(2)}</span>
+                        </div>
+                        {selectedProducts.length > 1 && (
+                          <button
+                            type="button"
+                            onClick={() => removeProduct(index)}
+                            className="text-sm text-red-600 hover:text-red-800"
+                          >
+                            Verwijderen
+                          </button>
+                        )}
                       </div>
                     </div>
-                    {selectedProducts.length > 1 && (
-                      <button
-                        type="button"
-                        onClick={() => removeProduct(index)}
-                        className="mt-2 text-sm text-red-600 hover:text-red-800"
-                      >
-                        Verwijderen
-                      </button>
-                    )}
-                  </div>
-                ))}
-                <button type="button" onClick={addProduct} className="btn-secondary w-full">
+                  );
+                })}
+                <button type="button" onClick={addProduct} className="btn-secondary w-full mb-4">
                   + Product Toevoegen
                 </button>
+                
+                {selectedProducts.length > 0 && (
+                  <div className="bg-blue-50 p-4 rounded-xl">
+                    <div className="flex justify-between items-center text-lg font-semibold">
+                      <span>Totaal:</span>
+                      <span className="text-[var(--accent-color)]">€{calculateTotal().toFixed(2)}</span>
+                    </div>
+                  </div>
+                )}
               </div>
 
               <div>
