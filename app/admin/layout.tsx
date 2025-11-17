@@ -18,10 +18,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     return children;
   }
 
-  const navItems = [
-    { name: 'Producten', href: '/admin/products' },
-    { name: 'Galerij', href: '/admin/gallery' },
-  ];
+    const navItems = [
+      { name: 'Producten', href: '/admin/products' },
+      { name: 'Galerij', href: '/admin/gallery' },
+      { name: 'Instellingen', href: '/admin/settings' },
+    ];
 
   return (
     <div className="min-h-screen bg-gray-50">
