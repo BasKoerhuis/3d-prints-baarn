@@ -1,0 +1,1 @@
+{"hasUsername":true,"username":"admin","hasPasswordHash":true,"passwordHashLength":60,"passwordHashStart":"$2a$10$GLj...","passwordHashEnd":"...R4yI7z80LK","rawEnvHash":"","rawEnvHashLength":0,"envCheck":{"ADMIN_USERNAME":true,"ADMIN_PASSWORD_HASH":false,"JWT_SECRET":true}}

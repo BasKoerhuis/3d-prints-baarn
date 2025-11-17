@@ -1,0 +1,88 @@
+[
+  {
+    "id": "prod001",
+    "name": "Fidget Spinner",
+    "slug": "fidget-spinner-pro",
+    "shortDescription": "Super soepel draaiende fidget spinner met 3 bearings",
+    "longDescription": "Deze fidget spinner is perfect voor wie graag wil friemelen! Met drie hoogwaardige bearings draait hij super soepel en lang. Verkrijgbaar in verschillende kleuren. Ideaal voor op school, tijdens het huiswerk maken of gewoon om mee te spelen. De spinner is stevig en gaat lang mee. Gemaakt van PLA plastic.",
+    "dimensions": "7.5 x 7.5 x 1.2 cm",
+    "features": [
+      "3 hoogwaardige bearings",
+      "Extra lange draaitijd",
+      "Verkrijgbaar in meerdere kleuren",
+      "Stevig en duurzaam"
+    ],
+    "priceChild": 4.5,
+    "priceAdult": 6.5,
+    "images": [
+      "/uploads/gallery/gallery-1762804701593.png"
+    ],
+    "inStock": true,
+    "createdAt": "2024-01-15T10:00:00.000Z",
+    "updatedAt": "2025-11-11T17:07:06.281Z"
+  },
+  {
+    "id": "prod002",
+    "name": "Telefoonhouder Bureau",
+    "slug": "telefoonhouder-bureau",
+    "shortDescription": "Handige telefoonhouder voor op je bureau",
+    "longDescription": "Deze slimme telefoonhouder is perfect voor op je bureau! Je telefoon staat in een perfecte kijkhoek, ideaal voor videobellen, filmpjes kijken of gewoon om je scherm goed te kunnen zien tijdens het werken. De houder heeft anti-slip pads zodat je telefoon goed blijft staan. Past bij de meeste telefoons.",
+    "dimensions": "8 x 6 x 10 cm",
+    "features": [
+      "Anti-slip pads",
+      "Perfecte kijkhoek",
+      "Past bij de meeste telefoons",
+      "Stabiel en stevig"
+    ],
+    "priceChild": 3.5,
+    "priceAdult": 5,
+    "images": [
+      "/uploads/gallery/gallery-1762805640946-drwsmd.png",
+      "/uploads/gallery/gallery-1762805640953-9tmvj3.png"
+    ],
+    "inStock": true,
+    "createdAt": "2024-01-16T10:00:00.000Z",
+    "updatedAt": "2025-11-10T20:28:24.285Z"
+  },
+  {
+    "id": "prod003",
+    "name": "Wolf fluit",
+    "slug": "minecraft-creeper-figuur",
+    "shortDescription": "Gave fluit in de vorm van een wolf.",
+    "longDescription": "Ben jij team Wolf? Dan moet je deze fluit hebben! Je kan zelfs verschillende tonen blazen.",
+    "dimensions": "6 x 6 x 12 cm",
+    "features": [
+      "Gedetailleerd ontwerp"
+    ],
+    "priceChild": 5,
+    "priceAdult": 7,
+    "images": [
+      "/uploads/gallery/gallery-1762805640939-5psasq.png"
+    ],
+    "inStock": true,
+    "createdAt": "2024-01-17T10:00:00.000Z",
+    "updatedAt": "2025-11-10T20:34:44.470Z"
+  },
+  {
+    "id": "prod004",
+    "name": "Fluit",
+    "slug": "sleutelhanger-robot",
+    "shortDescription": "Fluit",
+    "longDescription": "Kleine groene fluit",
+    "dimensions": "3 x 2 x 4.5 cm (zonder ring)",
+    "features": [
+      "Bewegende armen en benen",
+      "Sterke sleutelring",
+      "Compact formaat",
+      "Leuk cadeau"
+    ],
+    "priceChild": 2.5,
+    "priceAdult": 3.5,
+    "images": [
+      "/uploads/gallery/gallery-1762805640953-9tmvj3.png"
+    ],
+    "inStock": true,
+    "createdAt": "2024-01-18T10:00:00.000Z",
+    "updatedAt": "2025-11-10T20:29:53.570Z"
+  }
+]

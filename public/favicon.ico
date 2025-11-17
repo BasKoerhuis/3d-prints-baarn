@@ -1,0 +1,7 @@
+<svg width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="256" height="256" rx="64" fill="#007AFF"/>
+  <text x="128" y="160" font-family="system-ui, -apple-system, sans-serif" font-size="120" font-weight="700" fill="white" text-anchor="middle">3D</text>
+  <circle cx="205" cy="50" r="12" fill="white" opacity="0.3"/>
+  <circle cx="180" cy="220" r="8" fill="white" opacity="0.3"/>
+  <circle cx="40" cy="180" r="10" fill="white" opacity="0.3"/>
+</svg>
