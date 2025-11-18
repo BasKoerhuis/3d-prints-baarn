@@ -35,12 +35,13 @@ function OrderPage() {
       if (productId) {
         const product = data.data.find((p: Product) => p.id === productId);
         if (product) {
-          setSelectedProducts([{
-            productId: product.id,
-            productName: product.name,
-            quantity: 1,
-            priceType: 'child'
-          }]);
+         setSelectedProducts([{
+  productId: product.id,
+  productName: product.name,
+  quantity: 1,
+  priceType: 'child',
+  price: product.priceChild
+}]);
         }
       }
     }
