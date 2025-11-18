@@ -1,54 +1,54 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getAllProducts, createProduct, generateSlug } from '@/lib/data';
-import { requireAdmin } from '@/lib/auth-middleware';
+import { getAllProducts, createProduct } from '@/lib/data';
+import { generateSlug } from '@/lib/data';
 
-// GET all products
+// GET - Haal alle producten op
 export async function GET() {
   try {
-    const products = getAllProducts();
+    const products = await getAllProducts();
     return NextResponse.json({
       success: true,
       data: products
     });
   } catch (error) {
+    console.error('Error fetching products:', error);
     return NextResponse.json(
-      { success: false, error: 'Failed to fetch products' },
+      { success: false, error: 'Kon producten niet ophalen' },
       { status: 500 }
     );
   }
 }
 
-// POST create new product (admin only)
+// POST - Maak een nieuw product
 export async function POST(request: NextRequest) {
-  const authError = await requireAdmin(request);
-  if (authError) return authError;
-
   try {
-    const data = await request.json();
+    const body = await request.json();
     
-    const slug = generateSlug(data.name);
-    
-    const product = createProduct({
-      name: data.name,
-      slug,
-      shortDescription: data.shortDescription,
-      longDescription: data.longDescription,
-      dimensions: data.dimensions,
-      features: data.features || [],
-      priceChild: parseFloat(data.priceChild),
-      priceAdult: parseFloat(data.priceAdult),
-      images: data.images || [],
-      inStock: data.inStock !== false
-    });
+    // Parse product data
+   const productData = {
+  name: body.name,
+  slug: body.slug || generateSlug(body.name),
+      shortDescription: body.shortDescription,
+      longDescription: body.longDescription,
+      dimensions: body.dimensions,
+      features: Array.isArray(body.features) ? body.features : [],
+      priceChild: parseFloat(body.priceChild),
+      priceAdult: parseFloat(body.priceAdult),
+      inStock: body.inStock,
+      images: Array.isArray(body.images) ? body.images : []
+    };
+
+    const newProduct = await createProduct(productData);
 
     return NextResponse.json({
       success: true,
-      data: product
+      data: newProduct,
+      message: 'Product succesvol aangemaakt'
     });
   } catch (error) {
     console.error('Error creating product:', error);
     return NextResponse.json(
-      { success: false, error: 'Failed to create product' },
+      { success: false, error: 'Kon product niet aanmaken' },
       { status: 500 }
     );
   }

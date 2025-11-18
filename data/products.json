@@ -1,7 +1,7 @@
 [
   {
     "id": "prod001",
-    "name": "Fidget Spinner",
+    "name": "Fidget Spinners",
     "slug": "fidget-spinner-pro",
     "shortDescription": "Super soepel draaiende fidget spinner met 3 bearings",
     "longDescription": "Deze fidget spinner is perfect voor wie graag wil friemelen! Met drie hoogwaardige bearings draait hij super soepel en lang. Verkrijgbaar in verschillende kleuren. Ideaal voor op school, tijdens het huiswerk maken of gewoon om mee te spelen. De spinner is stevig en gaat lang mee. Gemaakt van PLA plastic.",
@@ -19,7 +19,7 @@
     ],
     "inStock": true,
     "createdAt": "2024-01-15T10:00:00.000Z",
-    "updatedAt": "2025-11-11T17:07:06.281Z"
+    "updatedAt": "2025-11-18T18:24:41.766Z"
   },
   {
     "id": "prod002",

@@ -249,7 +249,7 @@ export default function SettingsPage() {
                 <input
                   type="email"
                   className="input"
-                  placeholder="jeltevveen@gmail.com"
+                  placeholder="jelte@3dprintbaarn.nl"
                   value={emailSettings.orderEmail}
                   onChange={(e) => setEmailSettings({ ...emailSettings, orderEmail: e.target.value })}
                   required
@@ -296,7 +296,7 @@ export default function SettingsPage() {
                 <input
                   type="text"
                   className="input"
-                  placeholder="jeltevveen@gmail.com"
+                  placeholder="jelte@3dprintbaarn.nl"
                   value={emailSettings.smtpUser}
                   onChange={(e) => setEmailSettings({ ...emailSettings, smtpUser: e.target.value })}
                   required

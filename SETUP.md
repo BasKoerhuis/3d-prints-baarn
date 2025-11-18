@@ -1,6 +1,6 @@
 # 🚀 Snelstart Gids voor Jelte
 
-Welkom bij je nieuwe 3D Prints Baarn website! Deze gids helpt je om snel aan de slag te gaan.
+Welkom bij je nieuwe 3D Print Baarn website! Deze gids helpt je om snel aan de slag te gaan.
 
 ## ⚡ Stap 1: Eerste Keer Opstarten
 
@@ -96,7 +96,7 @@ dropoffLocations: [
 3. Klik "Bestellen"
 4. Vul het formulier in
 5. Klik "Bestelling Plaatsen"
-6. Check je email inbox (jeltevveen@gmail.com)
+6. Check je email inbox (jelte@3dprintbaarn.nl)
 
 ⚠️ **Let op**: Voor echte emails moet je later SMTP configureren!
 

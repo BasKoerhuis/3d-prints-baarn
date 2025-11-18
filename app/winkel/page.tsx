@@ -3,8 +3,8 @@ import Footer from '@/components/Footer';
 import ProductCard from '@/components/ProductCard';
 import { getAllProducts } from '@/lib/data';
 
-export default function ShopPage() {
-  const products = getAllProducts();
+export default async function ShopPage() {
+  const products = await getAllProducts();
 
   return (
     <div className="min-h-screen flex flex-col">

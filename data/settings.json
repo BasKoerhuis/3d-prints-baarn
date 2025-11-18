@@ -1,0 +1,8 @@
+{
+  "orderEmail": "jelte@3dprintbaarn.nl",
+  "smtpHost": "smtp.strato.com",
+  "smtpPort": 465,
+  "smtpUser": "jelte@3dprintbaarn.nl",
+  "smtpPass": "Gekkieislief1!",
+  "updatedAt": "2025-11-18T18:25:09.019Z"
+}

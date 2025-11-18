@@ -39,7 +39,7 @@ function formatOrderEmail(orderData: OrderFormData): string {
   </style>
 </head>
 <body>
-  <h1>🎯 Nieuwe Bestelling - 3D Prints Baarn</h1>
+  <h1>🎯 Nieuwe Bestelling - 3D Print Baarn</h1>
   
   <h2>Klantgegevens</h2>
   <div class="info-row"><span class="label">Naam:</span> ${name}</div>
@@ -89,7 +89,7 @@ function formatOrderEmail(orderData: OrderFormData): string {
   
   <hr style="margin: 30px 0; border: none; border-top: 1px solid #ddd;">
   <p style="color: #666; font-size: 0.9em;">
-    Deze e-mail is automatisch gegenereerd door het bestelsysteem van 3D Prints Baarn.
+    Deze e-mail is automatisch gegenereerd door het bestelsysteem van 3D Print Baarn.
   </p>
 </body>
 </html>
@@ -102,7 +102,7 @@ function formatOrderEmail(orderData: OrderFormData): string {
 export async function sendOrderEmail(orderData: OrderFormData): Promise<boolean> {
   try {
     const transporter = createTransporter();
-    const orderEmail = process.env.ORDER_EMAIL || 'jeltevveen@gmail.com';
+    const orderEmail = process.env.ORDER_EMAIL || 'jelte@3dprintbaarn.nl';
     
     const mailOptions = {
       from: process.env.SMTP_USER,
@@ -127,7 +127,7 @@ export async function sendContactEmail(data: {
 }): Promise<boolean> {
   try {
     const transporter = createTransporter();
-    const orderEmail = process.env.ORDER_EMAIL || 'jeltevveen@gmail.com';
+    const orderEmail = process.env.ORDER_EMAIL || 'jelte@3dprintbaarn.nl';
     
     const mailOptions = {
       from: process.env.SMTP_USER,

@@ -266,14 +266,14 @@ export default function AdminProductsPage() {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium mb-2">Afmetingen *</label>
+                <label className="block text-sm font-medium mb-2">Afmetingen</label>
                 <input
                   type="text"
                   className="input"
                   placeholder="bijv. 10 x 5 x 3 cm"
                   value={formData.dimensions}
                   onChange={(e) => setFormData({ ...formData, dimensions: e.target.value })}
-                  required
+               
                 />
               </div>
               <div>

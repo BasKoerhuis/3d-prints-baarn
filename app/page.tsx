@@ -6,8 +6,8 @@ import { getAllProducts } from '@/lib/data';
 import { siteConfig } from '@/config/site';
 import { Sparkles, Leaf, Zap, ArrowRight } from 'lucide-react';
 
-export default function HomePage() {
-  const products = getAllProducts();
+export default async function HomePage() {
+  const products = await getAllProducts();
   const featuredProducts = products.slice(0, 3);
 
   return (

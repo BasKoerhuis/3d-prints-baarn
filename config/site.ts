@@ -1,14 +1,13 @@
 import { SiteConfig, AboutContent, FAQItem } from '@/types';
 
 export const siteConfig: SiteConfig = {
-  siteName: '3D Prints Baarn',
+  siteName: '3D Print Baarn',
   tagline: 'Creatieve 3D prints gemaakt met passie',
-  orderEmail: process.env.ORDER_EMAIL || 'jeltevveen@gmail.com',
+  orderEmail: process.env.ORDER_EMAIL || 'jelte@3dprintbaarn.nl',
   accentColor: '#007AFF', // Apple-blue
   dropoffLocations: [
-    'Thuis in Baarn',
-    'Schoolplein',
-    'Sportvereniging',
+    'Jouw huis in Baarn',
+    'Lounge Griftland ',
     'Anders (zie opmerkingen)'
   ]
 };
@@ -19,7 +18,7 @@ export const aboutContent: AboutContent = {
   makerAge: 12,
   content: `
     Hoi! Ik ben Jelte, 12 jaar oud, en ik ben gek op 3D printen. Wat begon als een hobby is 
-    uitgegroeid tot mijn eigen kleine bedrijf: 3D Prints Baarn.
+    uitgegroeid tot mijn eigen kleine bedrijf: 3D Print Baarn.
     
     Met mijn 3D printer maak ik allerlei coole dingen - van speelgoed tot handige gadgets. 
     Elk product wordt met zorg en precisie gemaakt. Ik vind het geweldig om nieuwe designs 

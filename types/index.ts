@@ -5,7 +5,7 @@ export interface Product {
   slug: string;
   shortDescription: string;
   longDescription: string;
-  dimensions: string;
+  dimensions?: string;
   features: string[];
   priceChild: number;
   priceAdult: number;
@@ -19,7 +19,7 @@ export interface ProductFormData {
   name: string;
   shortDescription: string;
   longDescription: string;
-  dimensions: string;
+  dimensions?: string;
   features: string;
   priceChild: number;
   priceAdult: number;

@@ -1,6 +1,6 @@
 # 🌐 Deployen naar Strato Hosting
 
-Deze gids helpt je om de 3D Prints Baarn website op Strato hosting te plaatsen.
+Deze gids helpt je om de 3D Print Baarn website op Strato hosting te plaatsen.
 
 ## 📋 Wat Je Nodig Hebt
 
@@ -54,7 +54,7 @@ Deze gids helpt je om de 3D Prints Baarn website op Strato hosting te plaatsen.
 
 3. **Maak een email account** (als je deze nog niet hebt):
    - Bijv: info@3dprintsbaarn.nl
-   - Of gebruik: jeltevveen@gmail.com
+   - Of gebruik: jelte@3dprintbaarn.nl
 
 4. **Noteer je SMTP gegevens**:
    - Host: `smtp.strato.com`
@@ -68,7 +68,7 @@ Deze gids helpt je om de 3D Prints Baarn website op Strato hosting te plaatsen.
    SMTP_PORT=465
    SMTP_USER=info@3dprintsbaarn.nl
    SMTP_PASS=jouw-email-wachtwoord
-   ORDER_EMAIL=jeltevveen@gmail.com
+   ORDER_EMAIL=jelte@3dprintbaarn.nl
    ```
 
 ## 📁 Stap 4: Upload naar Strato
@@ -162,7 +162,7 @@ Je hebt dan een VPS nodig of moet een andere oplossing gebruiken zoals:
 
 3. **Test email**:
    - Plaats een test bestelling
-   - Check of de email aankomt op jeltevveen@gmail.com
+   - Check of de email aankomt op jelte@3dprintbaarn.nl
 
 ## 🔒 Stap 8: Beveiliging
 

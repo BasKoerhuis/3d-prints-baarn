@@ -1,4 +1,4 @@
-# 3D Prints Baarn - Website
+# 3D Print Baarn - Website
 
 Een moderne, Apple-geïnspireerde website voor het verkopen van 3D prints, gemaakt met Next.js 14, TypeScript en Tailwind CSS.
 
@@ -40,7 +40,7 @@ Een moderne, Apple-geïnspireerde website voor het verkopen van 3D prints, gemaa
 
    **Belangrijke variabelen:**
    
-   - `ORDER_EMAIL`: E-mailadres waar bestellingen naartoe gaan (jeltevveen@gmail.com)
+   - `ORDER_EMAIL`: E-mailadres waar bestellingen naartoe gaan (jelte@3dprintbaarn.nl)
    - `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`: SMTP instellingen voor Strato email
    - `ADMIN_USERNAME`: Admin gebruikersnaam (default: admin)
    - `ADMIN_PASSWORD_HASH`: Gehashte wachtwoord voor admin
@@ -287,11 +287,11 @@ Het admin panel is ook volledig mobiel-vriendelijk!
 ## 📞 Support
 
 Voor vragen of problemen:
-- Email: jeltevveen@gmail.com
+- Email: jelte@3dprintbaarn.nl
 
 ## 📄 Licentie
 
-© 2024 3D Prints Baarn. Alle rechten voorbehouden.
+© 2024 3D Print Baarn. Alle rechten voorbehouden.
 
 ---
 
