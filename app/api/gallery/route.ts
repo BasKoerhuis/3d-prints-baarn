@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getAllGalleryImages, createGalleryImage } from '@/lib/data';
-import { writeFile } from 'fs/promises';
-import { join } from 'path';
+import { uploadToSupabase } from '@/lib/supabase-storage';
 
 // GET - Haal alle galerij afbeeldingen op
 export async function GET() {
@@ -34,21 +33,38 @@ export async function POST(request: NextRequest) {
 
     for (const file of files) {
       if (file && file.size > 0) {
+        // Genereer unieke filename
+        const timestamp = Date.now();
+        const randomStr = Math.random().toString(36).substring(2);
+        const extension = file.name.split('.').pop();
+        const filename = `gallery-${timestamp}-${randomStr}.${extension}`;
+        
+        // Upload naar Supabase Storage
         const buffer = Buffer.from(await file.arrayBuffer());
-        const filename = `gallery-${Date.now()}-${Math.random().toString(36).substring(2)}.${file.name.split('.').pop()}`;
-        const filepath = join(process.cwd(), 'public', 'uploads', 'gallery', filename);
+        const uploadResult = await uploadToSupabase(buffer, 'gallery', filename);
         
-        await writeFile(filepath, buffer);
+        if (!uploadResult.success) {
+          console.error(`Failed to upload ${file.name}:`, uploadResult.error);
+          continue; // Skip dit bestand en ga door met de volgende
+        }
         
+        // Sla metadata op in database
         const newImage = await createGalleryImage({
           filename,
-          path: `/uploads/gallery/${filename}`,
+          path: uploadResult.url!, // De publieke URL van Supabase
           alt: alt || file.name,
           tags
         });
         
         uploadedImages.push(newImage);
       }
+    }
+
+    if (uploadedImages.length === 0) {
+      return NextResponse.json(
+        { success: false, error: 'Geen afbeeldingen succesvol geüpload' },
+        { status: 500 }
+      );
     }
 
     return NextResponse.json({
