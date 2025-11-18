@@ -86,7 +86,7 @@ export default function AdminProductsPage() {
       name: product.name,
       shortDescription: product.shortDescription,
       longDescription: product.longDescription,
-      dimensions: product.dimensions,
+      dimensions: product.dimensions || '',
       features: product.features.join('\n'),
       priceChild: product.priceChild.toString(),
       priceAdult: product.priceAdult.toString(),
