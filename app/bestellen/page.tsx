@@ -51,28 +51,40 @@ function OrderPage() {
   const addProduct = () => {
     if (products.length > 0) {
       setSelectedProducts([...selectedProducts, {
-        productId: products[0].id,
-        productName: products[0].name,
-        quantity: 1,
-        priceType: 'child'
-      }]);
+  productId: products[0].id,
+  productName: products[0].name,
+  quantity: 1,
+  priceType: 'child',
+  price: products[0].priceChild
+}]);
     }
   };
 
-  const updateProduct = (index: number, updates: Partial<OrderProduct>) => {
-    const newProducts = [...selectedProducts];
-    newProducts[index] = { ...newProducts[index], ...updates };
-    
-    // Update product name when product changes
-    if (updates.productId) {
-      const product = products.find(p => p.id === updates.productId);
-      if (product) {
-        newProducts[index].productName = product.name;
-      }
+const updateProduct = (index: number, updates: Partial<OrderProduct>) => {
+  const newProducts = [...selectedProducts];
+  newProducts[index] = { ...newProducts[index], ...updates };
+  
+  // Update product name and price when product changes
+  if (updates.productId) {
+    const product = products.find(p => p.id === updates.productId);
+    if (product) {
+      newProducts[index].productName = product.name;
+      // Update price based on current priceType
+      const priceType = updates.priceType || newProducts[index].priceType;
+      newProducts[index].price = priceType === 'child' ? product.priceChild : product.priceAdult;
     }
-    
-    setSelectedProducts(newProducts);
-  };
+  }
+  
+  // Update price when priceType changes
+  if (updates.priceType && !updates.productId) {
+    const product = products.find(p => p.id === newProducts[index].productId);
+    if (product) {
+      newProducts[index].price = updates.priceType === 'child' ? product.priceChild : product.priceAdult;
+    }
+  }
+  
+  setSelectedProducts(newProducts);
+};
 
   const removeProduct = (index: number) => {
     setSelectedProducts(selectedProducts.filter((_, i) => i !== index));
