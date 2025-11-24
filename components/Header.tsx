@@ -16,7 +16,7 @@ export default function Header() {
             <div className="w-8 h-8 bg-[var(--accent-color)] rounded-lg flex items-center justify-center text-white font-bold">
               3D
             </div>
-           <span className="font-semibold text-base sm:text-lg">{siteConfig.siteName}</span>
+           <span className="font-semibold text-base sm:text-lg">{siteConfig.siteName}</span>  
           </Link>
 
           {/* Desktop Navigation */}
