@@ -117,7 +117,7 @@ export default function ContactPage() {
                   />
                 </div>
                 {status !== 'idle' && (
-                  <div className={`p-4 rounded-lg ${status === 'success' ? 'bg-green-50 text-green-800' : status === 'warning' ? 'bg-amber-50 text-amber-800 border border-amber-300' : 'bg-red-50 text-red-800'}`}>
+                  <div className={`p-4 rounded-lg ${status === 'success' ? 'bg-green-50 text-green-800' : status === 'warning' ? 'bg-red-600 text-white font-semibold' : 'bg-red-50 text-red-800'}`}>
                     {message}
                   </div>
                 )}
