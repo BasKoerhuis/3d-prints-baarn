@@ -5,6 +5,15 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { siteConfig } from '@/config/site';
 
+// Tekst in de rode waarschuwings-popup voor geblokkeerde IP's.
+// Pas deze regels aan om de boodschap te wijzigen.
+const WARNING_LINES = [
+  'Je IP-adres, apparaatgegevens en het tijdstip van dit bericht zijn geregistreerd.',
+  'Dit is niet de eerste keer dat je dit doet.',
+  'Bij een volgend bericht worden deze gegevens gedeeld met school en ouders.',
+  'We houden je in de gaten.',
+];
+
 export default function ContactPage() {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'warning' | 'error'>('idle');
@@ -44,6 +53,32 @@ export default function ContactPage() {
 
   return (
     <div className="min-h-screen flex flex-col">
+      {status === 'warning' && (
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 p-4"
+          role="alertdialog"
+          aria-modal="true"
+        >
+          <div className="w-full max-w-xl rounded-2xl border-4 border-red-700 bg-red-600 p-8 text-center text-white shadow-2xl animate-pulse">
+            <div className="mb-4 text-7xl" aria-hidden="true">⚠️</div>
+            <h2 className="mb-6 text-4xl font-extrabold uppercase tracking-wide">
+              Waarschuwing
+            </h2>
+            <div className="space-y-3 text-lg font-semibold leading-snug">
+              {WARNING_LINES.map((line, i) => (
+                <p key={i}>{line}</p>
+              ))}
+            </div>
+            <button
+              type="button"
+              onClick={() => setStatus('idle')}
+              className="mt-8 rounded-lg border-2 border-white/70 px-6 py-2 text-base font-bold hover:bg-white/10"
+            >
+              Sluiten
+            </button>
+          </div>
+        </div>
+      )}
       <Header />
       <main className="flex-1 section">
         <div className="container max-w-4xl">
