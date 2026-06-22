@@ -31,24 +31,36 @@ export default function ContactPage() {
     audioCtxRef.current?.resume?.();
   };
 
-  // Speelt 4 harde piepjes af als alarm.
+  // Speelt 6 harde piepjes af als alarm.
   const playAlarm = () => {
+    if (!audioCtxRef.current) unlockAudio();
     const ctx = audioCtxRef.current;
     if (!ctx) return;
-    const now = ctx.currentTime;
-    for (let i = 0; i < 4; i++) {
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.type = 'square';
-      osc.frequency.value = 880;
-      const start = now + i * 0.35;
-      const end = start + 0.2;
-      gain.gain.setValueAtTime(0.0001, start);
-      gain.gain.exponentialRampToValueAtTime(0.6, start + 0.02);
-      gain.gain.exponentialRampToValueAtTime(0.0001, end);
-      osc.connect(gain).connect(ctx.destination);
-      osc.start(start);
-      osc.stop(end + 0.02);
+
+    const schedule = () => {
+      const now = ctx.currentTime;
+      for (let i = 0; i < 6; i++) {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'square';
+        // afwisselend hoog/laag voor een alarmerend sirene-effect
+        osc.frequency.value = i % 2 === 0 ? 1040 : 760;
+        const start = now + i * 0.3;
+        const end = start + 0.22;
+        gain.gain.setValueAtTime(0.0001, start);
+        gain.gain.exponentialRampToValueAtTime(0.9, start + 0.02);
+        gain.gain.exponentialRampToValueAtTime(0.0001, end);
+        osc.connect(gain).connect(ctx.destination);
+        osc.start(start);
+        osc.stop(end + 0.02);
+      }
+    };
+
+    // Context kan nog 'suspended' zijn; dan eerst hervatten, daarna plannen.
+    if (ctx.state === 'suspended') {
+      ctx.resume().then(schedule).catch(() => {});
+    } else {
+      schedule();
     }
   };
 
@@ -94,23 +106,27 @@ export default function ContactPage() {
           role="alertdialog"
           aria-modal="true"
         >
-          <div className="w-full max-w-xl rounded-2xl border-4 border-red-700 bg-red-600 p-8 text-center text-white shadow-2xl">
-            <div className="mb-4 text-7xl animate-pulse" aria-hidden="true">⚠️</div>
-            <h2 className="mb-6 text-4xl font-black uppercase tracking-wide text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.4)]">
-              Waarschuwing
-            </h2>
-            <div className="space-y-3 text-lg font-bold leading-snug text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.4)]">
-              {WARNING_LINES.map((line, i) => (
-                <p key={i}>{line}</p>
-              ))}
+          <div className="relative w-full max-w-xl overflow-hidden rounded-2xl border-4 border-red-700 shadow-2xl">
+            {/* Pulserend rood vlak op de achtergrond; tekst erboven blijft vol-wit */}
+            <div className="absolute inset-0 bg-red-600 animate-pulse" aria-hidden="true" />
+            <div className="relative p-8 text-center text-white">
+              <div className="mb-4 text-7xl" aria-hidden="true">⚠️</div>
+              <h2 className="mb-6 text-4xl font-black uppercase tracking-wide text-white">
+                Waarschuwing
+              </h2>
+              <div className="space-y-3 text-lg font-bold leading-snug text-white">
+                {WARNING_LINES.map((line, i) => (
+                  <p key={i}>{line}</p>
+                ))}
+              </div>
+              <button
+                type="button"
+                onClick={() => setStatus('idle')}
+                className="mt-8 rounded-lg border-2 border-white px-6 py-2 text-base font-bold text-white hover:bg-white/20"
+              >
+                Sluiten
+              </button>
             </div>
-            <button
-              type="button"
-              onClick={() => setStatus('idle')}
-              className="mt-8 rounded-lg border-2 border-white/70 px-6 py-2 text-base font-bold hover:bg-white/10"
-            >
-              Sluiten
-            </button>
           </div>
         </div>
       )}
