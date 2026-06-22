@@ -124,6 +124,9 @@ export async function sendContactEmail(data: {
   name: string;
   email: string;
   message: string;
+  ip?: string;
+  userAgent?: string;
+  submittedAt?: string;
 }): Promise<boolean> {
   try {
     const transporter = createTransporter();
@@ -149,6 +152,12 @@ export async function sendContactEmail(data: {
   <h2>Bericht:</h2>
   <div class="info">
     ${data.message.replace(/\n/g, '<br>')}
+  </div>
+  <h2>Technische gegevens</h2>
+  <div class="info" style="border-left-color: #999; font-size: 0.9em; color: #555;">
+    <p><strong>IP-adres:</strong> ${data.ip || 'onbekend'}</p>
+    <p><strong>Tijdstip:</strong> ${data.submittedAt || 'onbekend'}</p>
+    <p><strong>Apparaat/browser:</strong> ${data.userAgent || 'onbekend'}</p>
   </div>
 </body>
 </html>

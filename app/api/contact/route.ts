@@ -22,8 +22,17 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Capture request metadata for abuse tracking.
+    // On Vercel the visitor's public IP is in x-forwarded-for (first entry).
+    const forwardedFor = request.headers.get('x-forwarded-for') || '';
+    const ip = forwardedFor.split(',')[0].trim()
+      || request.headers.get('x-real-ip')
+      || 'onbekend';
+    const userAgent = request.headers.get('user-agent') || 'onbekend';
+    const submittedAt = new Date().toLocaleString('nl-NL', { timeZone: 'Europe/Amsterdam' });
+
     // Send email
-    const emailSent = await sendContactEmail(data);
+    const emailSent = await sendContactEmail({ ...data, ip, userAgent, submittedAt });
 
     if (!emailSent) {
       return NextResponse.json(
