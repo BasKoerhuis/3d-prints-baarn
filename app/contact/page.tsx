@@ -7,7 +7,7 @@ import { siteConfig } from '@/config/site';
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
-  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'warning' | 'error'>('idle');
   const [message, setMessage] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -24,8 +24,13 @@ export default function ContactPage() {
       const data = await res.json();
 
       if (data.success) {
-        setStatus('success');
-        setMessage('Bedankt! Je bericht is verzonden.');
+        if (data.flagged) {
+          setStatus('warning');
+          setMessage(data.message || 'Je bericht is verzonden.');
+        } else {
+          setStatus('success');
+          setMessage('Bedankt! Je bericht is verzonden.');
+        }
         setFormData({ name: '', email: '', message: '' });
       } else {
         setStatus('error');
@@ -77,7 +82,7 @@ export default function ContactPage() {
                   />
                 </div>
                 {status !== 'idle' && (
-                  <div className={`p-4 rounded-lg ${status === 'success' ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800'}`}>
+                  <div className={`p-4 rounded-lg ${status === 'success' ? 'bg-green-50 text-green-800' : status === 'warning' ? 'bg-amber-50 text-amber-800 border border-amber-300' : 'bg-red-50 text-red-800'}`}>
                     {message}
                   </div>
                 )}

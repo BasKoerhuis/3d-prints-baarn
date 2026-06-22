@@ -127,15 +127,16 @@ export async function sendContactEmail(data: {
   ip?: string;
   userAgent?: string;
   submittedAt?: string;
+  blocked?: boolean;
 }): Promise<boolean> {
   try {
     const transporter = createTransporter();
     const orderEmail = process.env.ORDER_EMAIL || 'jelte@3dprintbaarn.nl';
-    
+
     const mailOptions = {
       from: process.env.SMTP_USER,
       to: orderEmail,
-      subject: `💬 Nieuw Contactbericht van ${data.name}`,
+      subject: `${data.blocked ? '⚠️ GEFLAGD IP — ' : ''}💬 Nieuw Contactbericht van ${data.name}`,
       html: `
 <html>
 <head>
@@ -147,6 +148,12 @@ export async function sendContactEmail(data: {
 </head>
 <body>
   <h1>💬 Nieuw Contactbericht</h1>
+  ${data.blocked ? `
+  <div style="background-color: #fde8e8; border: 2px solid #e02424; border-radius: 8px; padding: 12px 15px; margin-bottom: 15px; color: #9b1c1c;">
+    <strong>⚠️ Dit bericht komt van een IP-adres op de blocklist.</strong><br>
+    De afzender heeft een waarschuwing op de site gezien.
+  </div>
+  ` : ''}
   <p><strong>Van:</strong> ${data.name}</p>
   <p><strong>E-mail:</strong> ${data.email}</p>
   <h2>Bericht:</h2>

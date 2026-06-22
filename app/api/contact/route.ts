@@ -1,5 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { sendContactEmail } from '@/lib/email';
+import { isIpBlocked } from '@/lib/blocklist';
+
+// Waarschuwing die een geblokkeerd IP terugkrijgt na het versturen.
+// Het bericht komt nog wél binnen (mét IP); dit is alleen een melding.
+const BLOCKED_NOTICE =
+  'Let op: berichten vanaf dit apparaat worden gemonitord in verband met ' +
+  'eerder misbruik. Je IP-adres en tijdstip zijn geregistreerd.';
 
 export async function POST(request: NextRequest) {
   try {
@@ -31,8 +38,11 @@ export async function POST(request: NextRequest) {
     const userAgent = request.headers.get('user-agent') || 'onbekend';
     const submittedAt = new Date().toLocaleString('nl-NL', { timeZone: 'Europe/Amsterdam' });
 
-    // Send email
-    const emailSent = await sendContactEmail({ ...data, ip, userAgent, submittedAt });
+    // Check of dit IP op de blocklist staat (fail-open).
+    const blocked = await isIpBlocked(ip);
+
+    // Send email (geflagd in onderwerp + body als het IP geblokkeerd is)
+    const emailSent = await sendContactEmail({ ...data, ip, userAgent, submittedAt, blocked });
 
     if (!emailSent) {
       return NextResponse.json(
@@ -43,7 +53,8 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      message: 'Bericht succesvol verzonden!'
+      flagged: blocked,
+      message: blocked ? BLOCKED_NOTICE : 'Bericht succesvol verzonden!'
     });
   } catch (error) {
     console.error('Contact form error:', error);
