@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { siteConfig } from '@/config/site';
@@ -18,10 +18,44 @@ export default function ContactPage() {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'warning' | 'error'>('idle');
   const [message, setMessage] = useState('');
+  const audioCtxRef = useRef<AudioContext | null>(null);
+
+  // AudioContext "ontgrendelen" tijdens de klik (browsers blokkeren geluid
+  // zonder gebruikersactie). Aanroepen vanuit handleSubmit.
+  const unlockAudio = () => {
+    if (typeof window === 'undefined') return;
+    if (!audioCtxRef.current) {
+      const AC = window.AudioContext || (window as any).webkitAudioContext;
+      if (AC) audioCtxRef.current = new AC();
+    }
+    audioCtxRef.current?.resume?.();
+  };
+
+  // Speelt 4 harde piepjes af als alarm.
+  const playAlarm = () => {
+    const ctx = audioCtxRef.current;
+    if (!ctx) return;
+    const now = ctx.currentTime;
+    for (let i = 0; i < 4; i++) {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'square';
+      osc.frequency.value = 880;
+      const start = now + i * 0.35;
+      const end = start + 0.2;
+      gain.gain.setValueAtTime(0.0001, start);
+      gain.gain.exponentialRampToValueAtTime(0.6, start + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.0001, end);
+      osc.connect(gain).connect(ctx.destination);
+      osc.start(start);
+      osc.stop(end + 0.02);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus('loading');
+    unlockAudio();
 
     try {
       const res = await fetch('/api/contact', {
@@ -36,6 +70,7 @@ export default function ContactPage() {
         if (data.flagged) {
           setStatus('warning');
           setMessage(data.message || 'Je bericht is verzonden.');
+          playAlarm();
         } else {
           setStatus('success');
           setMessage('Bedankt! Je bericht is verzonden.');
@@ -59,12 +94,12 @@ export default function ContactPage() {
           role="alertdialog"
           aria-modal="true"
         >
-          <div className="w-full max-w-xl rounded-2xl border-4 border-red-700 bg-red-600 p-8 text-center text-white shadow-2xl animate-pulse">
-            <div className="mb-4 text-7xl" aria-hidden="true">⚠️</div>
-            <h2 className="mb-6 text-4xl font-extrabold uppercase tracking-wide">
+          <div className="w-full max-w-xl rounded-2xl border-4 border-red-700 bg-red-600 p-8 text-center text-white shadow-2xl">
+            <div className="mb-4 text-7xl animate-pulse" aria-hidden="true">⚠️</div>
+            <h2 className="mb-6 text-4xl font-black uppercase tracking-wide text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.4)]">
               Waarschuwing
             </h2>
-            <div className="space-y-3 text-lg font-semibold leading-snug">
+            <div className="space-y-3 text-lg font-bold leading-snug text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.4)]">
               {WARNING_LINES.map((line, i) => (
                 <p key={i}>{line}</p>
               ))}
